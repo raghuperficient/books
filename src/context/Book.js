@@ -10,7 +10,7 @@ function Provider({children}){
  const [books, setBooks] = useState([]);
 
   const fetchBooks = useCallback ( async (title) => {
-    const response =  await axios.get('http://localhost:3001/books');
+    const response =  await axios.get('http://book-service-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books');
 
     setBooks(response.data)
 
@@ -18,7 +18,7 @@ function Provider({children}){
 
   const createBook = async (title) => {
 
-    const response =  await axios.post('http://localhost:3001/books', {
+    const response =  await axios.post('http://book-service-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books', {
       title
     })
     const updatedBooks = [...books, response.data];
@@ -26,7 +26,7 @@ function Provider({children}){
   }
   
   const deleteBookById = async (id) => {
-    const response =  await axios.delete(`http://localhost:3001/books/${id}`)
+    const response =  await axios.delete(`http://book-service-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books/${id}`)
 
       const updateBooks = books.filter((book) => {
          return book.id != id
@@ -37,7 +37,7 @@ function Provider({children}){
 
  const editBookById = async (id, title) => {
 
-  const response =  await axios.put(`http://localhost:3001/books/${id}`, {
+  const response =  await axios.put(`http://book-service-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books/${id}`, {
     title : title
   });
 
