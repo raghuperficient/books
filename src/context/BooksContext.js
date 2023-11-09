@@ -21,7 +21,7 @@ function Provider({children}){
   setLoading(true);
   try{
 
-      const favResponse =  await axios.get('http://books-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books');
+      const favResponse =  await axios.get('http://book-service-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com//api/books');
    
       setFavBooks(favResponse.data)
       if(searchTerm.length==0){
@@ -72,12 +72,12 @@ useEffect(() => {
 
 
 const fetchFavorites = useCallback ( async (title) => {
-  const response =  await axios.get('http://books-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books');
+  const response =  await axios.get('http://book-service-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com//api/books');
   setFavBooks(response.data)
 },[])
 
   const addtoFavourite = async (id) => {
-    const response =  await axios.post('http://books-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books', {
+    const response =  await axios.post('http://book-service-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com//api/books', {
       id
     })
     const updatedBooks = [...favBooks, response.data];
@@ -85,7 +85,7 @@ const fetchFavorites = useCallback ( async (title) => {
   }
   
   const deleteFavourite = async (id) => {
-      const response =  await axios.delete(`http://books-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books/${id}`)
+      const response =  await axios.delete(`http://book-service-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com//api/books/${id}`)
       const updateBooks = favBooks.filter((book) => {
          return book.id != id
       } );
