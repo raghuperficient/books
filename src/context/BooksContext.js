@@ -21,7 +21,7 @@ function Provider({children}){
   setLoading(true);
   try{
 
-      const favResponse =  await axios.get('http://localhost:8080/api/books');
+      const favResponse =  await axios.get('http://books-git-raghu-demo.apps.prft-cps.zuvk.p1.openshiftapps.com/api/books');
    
       setFavBooks(favResponse.data)
       if(searchTerm.length==0){
