@@ -1,38 +1,70 @@
-import { useContext, useState } from "react"
-import BookEdit from "./BookEdit";
-import BooksContext from "../context/Book";
+import React, {useState, useEffect, useContext} from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Bookshow.css'
+import cover_img from "../images/cover_not_found.jpg";
+import {MdDelete} from 'react-icons/md'
+import BooksContext from "../context/BooksContext"
 
-function BookShow({book}) {
+const URL = "https://openlibrary.org/works/";
 
-const { deleteBookById }  = useContext(BooksContext)
+const BookDetails = ({id}) => {
+
+  const {deleteFavourite} = useContext(BooksContext)
+  const [loading, setLoading] = useState(false);
+  const [book, setBook] = useState(null);
+  const navigate = useNavigate();
+
+  
+
+  useEffect(() => {
+    async function getBookDetails(){
+      try{
+        const response = await fetch(`${URL}${id}.json`);
+        const data = await response.json();
+
+        if(data){
+          const {description, title, covers, subject_places, subject_times, subjects} = data;
+          const newBook = {
+            description: description ? description.value : "No description found",
+            title: title,
+            cover_img: covers ? `https://covers.openlibrary.org/b/id/${covers[0]}-L.jpg` : cover_img,
+            subject_places: subject_places ? subject_places.join(", ") : "No subject places found",
+            subject_times : subject_times ? subject_times.join(", ") : "No subject times found",
+            subjects: subjects ? subjects.join(", ") : "No subjects found"
+          };
+          setBook(newBook);
+        } else {
+          setBook(null);
+        }
+      } catch(error){
+        console.log(error);
+      }
+    }
+    getBookDetails();
+  }, [id]);
 
 
-const [showedit, setShowEdit] = useState(false);
+  const onDelete = () => {
+    deleteFavourite(id);
+  }
 
-const handleDeleteClick = () => {
-    deleteBookById(book.id)
-}
 
-const handleEditClick = () => {
-    setShowEdit(!showedit)
-}
+  return (
 
-const onSave = () => {
-    setShowEdit(false)
-}
-
-let content = <h3>{book.title}</h3>
-if(showedit){
-    content = <BookEdit book={book}  onSave={onSave}></BookEdit>
-}
-  return <div className="book-show">
-    <img alt="books" src={`https://picsum.photos/seed/${book.id}/300/200`} />
-    <div>{content}</div>
+    <div className="book-show">
+    <img alt="books" src={book?.cover_img}  />
+    <div>{book?.title}</div>
     <div className="actions">
-    <button className="edit" onClick={handleEditClick}>edit</button>
-        <button className="delete" onClick={handleDeleteClick}>delete</button>
+        <button className="delete" onClick={onDelete}>
+          <MdDelete size = {22} />
+        </button>
     </div>
     </div>
+
+    
+
+
+  )
 }
 
-export default BookShow;
+export default BookDetails
